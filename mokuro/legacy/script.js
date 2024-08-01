@@ -9,18 +9,18 @@ let storageKey = "mokuro_" + window.location.pathname;
 let defaultState = {
     page_idx: 0,
     page2_idx: -1,
-    hasCover: false,
+    hasCover: true,
     r2l: true,
-    singlePageView: false,
+    singlePageView: true,
     ctrlToPan: false,
     textBoxBorders: false,
     editableText: false,
     displayOCR: true,
-    fontSize: "auto",
+    fontSize: 60,
     eInkMode: false,
-    defaultZoomMode: "fit to screen",
+    defaultZoomMode: "fit to width",
     toggleOCRTextBoxes: false,
-    backgroundColor: '#C4C3D0',
+    backgroundColor: '#000000',
 };
 
 let state = JSON.parse(JSON.stringify(defaultState));
@@ -112,7 +112,7 @@ function disablePanzoomOnElement(element) {
 }
 
 function initTextBoxes() {
-// Add event listeners for toggling ocr text boxes with the toggleOCRTextBoxes option.
+    // Add event listeners for toggling ocr text boxes with the toggleOCRTextBoxes option.
     let textBoxes = document.querySelectorAll('.textBox');
     for (let i = 0; i < textBoxes.length; i++) {
         textBoxes[i].addEventListener('click', function (e) {
@@ -127,7 +127,7 @@ function initTextBoxes() {
             }
         });
     }
-// When clicking off of a .textBox, remove the hovered state.
+    // When clicking off of a .textBox, remove the hovered state.
     document.addEventListener('click', function (e) {
         if (state.toggleOCRTextBoxes) {
             if (e.target.closest('.textBox') === null) {
@@ -233,12 +233,12 @@ document.getElementById('menuToggleOCRTextBoxes').addEventListener('click', func
 document.getElementById('menuBackgroundColor').addEventListener(
     'input',
     function (event) {
-      state.backgroundColor = event.target.value;
-      saveState();
-      updateProperties();
+        state.backgroundColor = event.target.value;
+        saveState();
+        updateProperties();
     },
     false
-  );
+);
 
 document.getElementById('menuOriginalSize').addEventListener('click', zoomOriginal, false);
 document.getElementById('menuFitToWidth').addEventListener('click', zoomFitToWidth, false);
@@ -327,6 +327,14 @@ document.addEventListener("keydown", function onEvent(e) {
         case "0":
             zoomDefault();
             break;
+        case "ArrowLeft":
+            nextPage();
+            break;
+
+        case "ArrowRight":
+            prevPage();
+            break;
+
     }
 });
 
@@ -563,10 +571,10 @@ function checkImage(path) {
     return new Promise((resolve) => {
         var img = new Image();
         img.onload = function () {
-            resolve({path, status: true});
+            resolve({ path, status: true });
         };
         img.onerror = function () {
-            resolve({path, status: false});
+            resolve({ path, status: false });
         };
         img.src = path;
     });

@@ -185,12 +185,13 @@ def dropdown_menu(doc, tag, text):
         with tag("a", href="#", klass="dropdown-option", id=id_):
             text(text_content)
 
-    def option_toggle(id_, text_content):
+    def option_toggle(id_, text_content, default=False):
         with tag("label", klass="dropdown-option"):
             text(text_content)
 
-            with tag("input", type="checkbox", id=id_):
+            with tag("input", type="checkbox", id=id_, checked=default):
                 pass
+
 
     def option_select(id_, text_content, values):
         with tag("label", klass="dropdown-option"):
@@ -225,20 +226,20 @@ def dropdown_menu(doc, tag, text):
                 "menuDefaultZoom",
                 "on page turn: ",
                 [
-                    "fit to screen",
                     "fit to width",
+                    "fit to screen",
                     "original size",
                     "keep zoom level",
                 ],
             )
-            option_toggle("menuR2l", "right to left")
-            option_toggle("menuDoublePageView", "display two pages ")
-            option_toggle("menuHasCover", "first page is cover ")
+            option_toggle("menuR2l", "right to left ", default=True)
+            option_toggle("menuDoublePageView", "display two pages ", default=False)
+            option_toggle("menuHasCover", "first page is cover ", default=True)
             option_toggle("menuCtrlToPan", "ctrl+mouse to move ")
-            option_toggle("menuDisplayOCR", "OCR enabled ")
+            option_toggle("menuDisplayOCR", "OCR enabled ", default=True)
             option_toggle("menuTextBoxBorders", "display boxes outlines ")
             option_toggle("menuEditableText", "editable text ")
-            option_select("menuFontSize", "font size: ", ["auto", 9, 10, 11, 12, 14, 16, 18, 20, 24, 32, 40, 48, 60])
+            option_select("menuFontSize", "font size: ", [70, "auto", 9, 10, 11, 12, 14, 16, 18, 20, 24, 32, 40, 48, 60])
             option_toggle("menuEInkMode", "e-ink mode ")
             option_toggle("menuToggleOCRTextBoxes", "toggle OCR text boxes on click")
             option_color("menuBackgroundColor", "background color", "#C4C3D0")
